@@ -9,7 +9,18 @@ const mistakesElement = document.getElementById("mistakes");
 const triesboxesElement = document.querySelectorAll("#tries-box > div ");
 const triesElement = document.getElementById("tries");
 
-const words = ["example", "javascript", "coding", "challenge"];
+let words = ["example", "javascript", "coding", "challenge"];
+fetch("./words.json")
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.words && Array.isArray(data.words)) {
+      words = data.words;
+    }
+  })
+  .catch((error) => {
+    console.error("Failed to load words.json. Using fallback words.", error);
+  });
+
 let currentWord = "";
 let tries = 0;
 let mistakes = "";
@@ -38,7 +49,7 @@ function generateRandomWord() {
   currentWord = words[randomWordIndex];
   const scrambledWord = scrambleWord(currentWord);
   createInputFields(scrambledWord.length);
-  textBox.innerHTML = scrambledWord;
+  textBox.textContent = scrambledWord;
 }
 
 function createInputFields(length) {
@@ -190,7 +201,7 @@ function clearAll() {
 window.addEventListener("keypress", handleInput);
 randomWordBtn.addEventListener("click", () => {
   generateRandomWord();
-  message.innerHTML = "yeah, maybe running away is you best option! pathtic ";
+  message.innerHTML = "yeah, maybe running away is you best option! pathetic ";
   message.style.color = "#F2F5F9";
 });
 checkWordBtn.addEventListener("click", () =>
